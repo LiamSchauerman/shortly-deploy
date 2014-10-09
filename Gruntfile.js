@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     cssmin: {
       combine: {
         files: {
-          'public/dist/style.min.css': 'public/lib/style.css'
+          'public/dist/style.min.css': 'public/style.css'
         }
       }
 
@@ -77,9 +77,14 @@ module.exports = function(grunt) {
     },
 
     shell: {
-      prodServer: {
+      // prodServer: {
+      browse: {
+        command: 'azure site browse'
+      },
+      push: {
+        command: 'git push azure master'
       }
-    },
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -100,10 +105,10 @@ module.exports = function(grunt) {
     });
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
+    // grunt.task.run([ 'watch' ]);
+    grunt.task.run(['deploy']);
+    grunt.task.run(['browser']);
 
-    grunt.task.run([ 'watch' ]);
-
-    grunt.task.run(['build', 'test'])
 
   });
 
@@ -111,26 +116,29 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('test', [
-    'jshint',
-    'mochaTest'
-  ]);
+  grunt.registerTask( 'build', ['concat', 'uglify', 'cssmin'] );
 
-  grunt.registerTask('build', [
-    'concat', 'uglify', 'cssmin'
-  ]);
+  grunt.registerTask( 'test', ['jshint', 'mochaTest'], function() {
+    grunt.task.requires('build');
+  } );
+
+  grunt.registerTask( 'deploy', ['build', 'test']);
+
+  grunt.registerTask( 'pusher', 'shell:push', function(){
+    grunt.task.requires('test');
+  });
+
+  grunt.registerTask( 'browser', 'shell:browse', function(){
+    grunt.task.requires('test');
+  });
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      // add your production server task here
+      grunt.task.run(['deploy', 'pusher']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
-
-  grunt.registerTask('deploy', [
-    // add your deploy tasks here
-  ]);
 
 
 };
