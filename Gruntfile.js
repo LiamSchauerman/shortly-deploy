@@ -105,10 +105,8 @@ module.exports = function(grunt) {
     });
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
-    // grunt.task.run([ 'watch' ]);
-    grunt.task.run(['deploy']);
-    grunt.task.run(['browser']);
-
+    grunt.task.run([ 'watch']);
+    // grunt.task.run(['deploy', 'browser']);
 
   });
 
@@ -118,27 +116,24 @@ module.exports = function(grunt) {
 
   grunt.registerTask( 'build', ['concat', 'uglify', 'cssmin'] );
 
-  grunt.registerTask( 'test', ['jshint', 'mochaTest'], function() {
-    grunt.task.requires('build');
-  } );
-
-  grunt.registerTask( 'deploy', ['build', 'test']);
-
-  grunt.registerTask( 'pusher', 'shell:push', function(){
-    grunt.task.requires('test');
-  });
-
-  grunt.registerTask( 'browser', 'shell:browse', function(){
-    grunt.task.requires('test');
-  });
+  grunt.registerTask( 'test', ['jshint', 'mochaTest']);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      grunt.task.run(['deploy', 'pusher']);
+      // grunt.task.run(['shell:push']);
     } else {
-      grunt.task.run([ 'server-dev' ]);
+      grunt.task.run(['server-dev']);
     }
   });
 
+  grunt.registerTask( 'deploy', ['test', 'build', 'upload']);
 
 };
+
+  // grunt.registerTask( 'pusher', 'shell:push', function(){
+  //   grunt.task.requires('test');
+  // });
+
+  // grunt.registerTask( 'browser', 'shell:browse', function(){
+  //   grunt.task.requires('test');
+  // });
