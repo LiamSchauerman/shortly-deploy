@@ -7,10 +7,8 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        // the files to concatenate
-        src: ['public/client/link.js', 'public/client/links.js', 'public/client/linkView.js', 'public/client/createLinkView.js', 'public/client/linksView.js', 'public/client/router.js', 'public/client/app.js' ],
-        // the location of the resulting JS file
-        dest: 'dist/concat.js'
+        src: ['public/lib/jquery.js', 'public/lib/underscore.js', 'public/lib/backbone.js', 'public/lib/handlebars.js', 'public/client/link.js', 'public/client/links.js', 'public/client/linkView.js', 'public/client/createLinkView.js', 'public/client/linksView.js', 'public/client/router.js', 'public/client/app.js' ],
+        dest: 'public/dist/concat.js'
       }
     },
 
@@ -31,15 +29,17 @@ module.exports = function(grunt) {
 
     uglify: {
       shabuild: {
-        src: 'dist/concat.js',
-        dest: 'dist/concat.min.js'
+        src: 'public/dist/concat.js',
+        dest: 'public/dist/concat.min.js'
       }
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      beforeconcat: ['public/lib/jquery.js', 'public/lib/underscore.js', 'public/lib/backbone.js', 'public/lib/handlebars.js', 'public/client/link.js', 'public/client/links.js', 'public/client/linkView.js', 'public/client/createLinkView.js', 'public/client/linksView.js', 'public/client/router.js', 'public/client/app.js'],
+      afterconcat: ['public/dist/concat.js'],
+      // files: [
+      //   // Add filespec list here
+      // ],
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
@@ -51,6 +51,12 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      combine: {
+        files: {
+          'public/dist/style.min.css': 'public/lib/style.css'
+        }
+      }
+
     },
 
     watch: {
@@ -96,6 +102,9 @@ module.exports = function(grunt) {
     nodemon.stderr.pipe(process.stderr);
 
     grunt.task.run([ 'watch' ]);
+
+    grunt.task.run(['build', 'test'])
+
   });
 
   ////////////////////////////////////////////////////
@@ -103,11 +112,12 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
   grunt.registerTask('build', [
-    'concat', 'uglify'
+    'concat', 'uglify', 'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
