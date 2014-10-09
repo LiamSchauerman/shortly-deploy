@@ -105,8 +105,7 @@ module.exports = function(grunt) {
     });
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
-    // grunt.task.run([ 'watch', 'shell:browse']);
-    grunt.task.run(['shell:browse']);
+    // grunt.task.run([ 'watch']);
 
   });
 
@@ -130,10 +129,3 @@ module.exports = function(grunt) {
 
 };
 
-  // grunt.registerTask( 'pusher', 'shell:push', function(){
-  //   grunt.task.requires('test');
-  // });
-
-  // grunt.registerTask( 'browser', 'shell:browse', function(){
-  //   grunt.task.requires('test');
-  // });
