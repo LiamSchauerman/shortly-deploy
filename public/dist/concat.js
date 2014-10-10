@@ -15032,6 +15032,7 @@ Handlebars.template = Handlebars.VM.template;
   },
 
   index: function(){
+    console.log("in router /index")
     var links = new Shortly.Links();
     var linksView = new Shortly.LinksView({ collection: links });
     this.swapView(linksView);

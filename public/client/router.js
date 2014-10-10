@@ -13,6 +13,7 @@ Shortly.Router = Backbone.Router.extend({
   },
 
   index: function(){
+    console.log("in router /index")
     var links = new Shortly.Links();
     var linksView = new Shortly.LinksView({ collection: links });
     this.swapView(linksView);

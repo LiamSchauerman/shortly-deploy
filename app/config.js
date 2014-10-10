@@ -3,7 +3,7 @@ var path = require('path');
 
 mongoURI = 'mongodb://localhost/shortlydb';
 
-mongoose.connect(mongoURI);
+// mongoose.connect(mongoURI);
 
 var db = mongoose.connection;
 
