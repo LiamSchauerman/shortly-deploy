@@ -13,12 +13,12 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User', userSchema);
 
 userSchema.pre('save', function(next){
-
+ var that = this;
   bcrypt.hash(this.password, null, null, function(err, result){
     if(err){
       console.log("ERR: ", err);
     } else {
-      this.password = result;
+      that.password = result;
       next();
     }
   });
