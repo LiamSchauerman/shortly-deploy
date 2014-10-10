@@ -6,9 +6,11 @@ module.exports = function(grunt) {
       options: {
         separator: ';'
       },
-      dist: {
-        src: ['public/lib/jquery.js', 'public/lib/underscore.js', 'public/lib/backbone.js', 'public/lib/handlebars.js', 'public/client/link.js', 'public/client/links.js', 'public/client/linkView.js', 'public/client/createLinkView.js', 'public/client/linksView.js', 'public/client/router.js', 'public/client/app.js' ],
-        dest: 'public/dist/concat.js'
+      basic_and_extras: {
+        files: {
+          'public/dist/concatLib.js': ['public/lib/jquery.js', 'public/lib/underscore.js', 'public/lib/backbone.js'],
+          'public/dist/concatView.js': [ 'public/client/app.js', 'public/client/link.js', 'public/client/links.js', 'public/client/linkView.js', 'public/client/linksView.js', 'public/client/createLinkView.js', 'public/client/router.js']
+        }
       }
     },
 
@@ -28,9 +30,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      shabuild: {
-        src: 'public/dist/concat.js',
-        dest: 'public/dist/concat.min.js'
+      dist: {
+        files: {
+            'public/dist/concatLib.min.js': 'public/dist/concatLib.js',
+            'public/dist/concatView.min.js': 'public/dist/concatView.js'
+        }
       }
     },
 
@@ -115,7 +119,7 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask( 'build', ['concat', 'uglify', 'cssmin'] );
+  grunt.registerTask( 'build', ['concat','uglify', 'cssmin'] );
 
   grunt.registerTask( 'test', ['jshint', 'mochaTest']);
 
