@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
 
 
@@ -8,7 +8,6 @@ var userSchema = mongoose.Schema({
   password: String
 
 });
-
 
 
 var User = mongoose.model('User', userSchema);
@@ -25,8 +24,11 @@ userSchema.pre('save', function(next){
   });
 });
 
-userSchema.prototype.comparePassword = function(attempted, callback) {
+User.prototype.comparePassword = function(attempted, callback) {
     bcrypt.compare(attempted, this.password, function(err, isMatch) {
+      if(err){
+        return callback(err);
+      }
       callback(isMatch);
     });
 }

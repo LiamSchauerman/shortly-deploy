@@ -107,6 +107,7 @@ module.exports = function(grunt) {
     nodemon.stderr.pipe(process.stderr);
     // grunt.task.run([ 'watch']);
     // grunt.task.run([ 'watch', 'shell:browse']);
+    grunt.task.run(['build', 'test']);
 
   });
 
