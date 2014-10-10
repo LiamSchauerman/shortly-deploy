@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var path = require('path');
 
-mongoURI = 'mongodb://localhost/shortlydb';
+mongoURI = 'mongodb://127.0.0.1/shortlydb';
 
-// mongoose.connect(mongoURI);
+mongoose.connect(mongoURI);
 
 var db = mongoose.connection;
 
